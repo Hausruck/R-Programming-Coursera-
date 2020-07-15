@@ -1,9 +1,38 @@
 
-pollutantmean <- function(directory, pollutant, id = 1:332) {
-    directory <- c("/Volumes/1TB/Documents/Coursera/Data Science/specdata")
-    pollutant <- c(!is.na("sulfate") | !is.na("nitrate"))
-    id <- c("ID")
+setwd("/Volumes/1TB/Documents/Coursera/Data Science/specdata")
+
+pollutantmean <- function(directory, pollutant="sulfate", id = 1:332) {
+    temp = list.files(path=directory, pattern="*.csv")
+    dat = do.call(rbind,lapply(temp, function(x) read.csv(x)))
+    net = data.frame()
+    for (f in id) {
+        if(pollutant == "sulfate"){
+            get <- dat[dat$ID == f, 2]
+        } else {
+            get <- dat[dat$ID == f, 3]
+        }
+        net <- c(get, net)
     
-    mean(sum(pollutant), id)
+    s <- as.numeric(net)
+    avg <- mean(s, na.rm = TRUE)
+    print(avg)
     
+}
+
+##Examples that worked:
+pollutantmeaf <- function(directory,pollutant="sulfate",id=1:332){
+    temp = list.files(path=directory,pattern="*.csv")
+    dat = do.call (rbind,lapply(temp,function(x) read.csv(x)))
+    net = data.frame()
+    for (f in id) {
+        if(pollutant=="sulfate"){
+            get <-dat[dat$ID ==f,2]
+        } else {
+            get <-dat[dat$ID ==f,3]
+        }
+        net <- c(get,net)
+    }
+    s<-as.numeric(net)
+    avg <-mean(s,na.rm=TRUE)
+    print(avg)
 }
